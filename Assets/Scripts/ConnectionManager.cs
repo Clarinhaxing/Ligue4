@@ -1,29 +1,23 @@
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 
 public class ConnectionManager : MonoBehaviour
 {
+    public string hostIP = "127.0.0.1";
+
     public void StartHost()
     {
-        if (NetworkManager.Singleton.IsListening)
-        {
-            Debug.Log("Já existe uma conexão ativa.");
-            return;
-        }
-
         NetworkManager.Singleton.StartHost();
-        Debug.Log("Host iniciado!");
     }
 
     public void StartClient()
     {
-        if (NetworkManager.Singleton.IsListening)
-        {
-            Debug.Log("Já existe uma conexão ativa.");
-            return;
-        }
+        UnityTransport transport =
+            NetworkManager.Singleton.GetComponent<UnityTransport>();
+
+        transport.SetConnectionData(hostIP, 7777);
 
         NetworkManager.Singleton.StartClient();
-        Debug.Log("Client iniciado!");
     }
 }
